@@ -18,9 +18,24 @@ function Game(options){
 Game.prototype.drawSnake = function () {
 
 	this.snake.body.forEach(function(position, index){
-		var selector = '[data-row=' + position.row + '][data-column=' + position.column + ']'; // attribute contains selector, see documentation: https://api.jquery.com/attribute-contains-selector/
+		var selector = '[data-row=' + position.row + '][data-column=' + position.column + ']'; // we use here attribute contains selector, see documentation: https://api.jquery.com/attribute-contains-selector/
 		$(selector).addClass('snake');
 	})
+}
+
+Game.prototype.clearSnake = function() {
+	$('.snake').removeClass('snake')
+}
+
+Game.prototype.start = function () {
+	setInterval(this.update.bind(this), 100)
+}
+
+Game.prototype.update = function() {
+	this.snake.moveForward(this.rows, this.columns);
+	this.clearSnake();
+	this.drawSnake()
+
 }
 
 $(document).ready(function(){
@@ -32,6 +47,7 @@ $(document).ready(function(){
 	})
 
 	game.drawSnake();
+	game.start();
 })
 
 /* Need to know:
@@ -43,7 +59,7 @@ We need an array of 3 elements: [position of tail, position of body, position of
 Each element is an object, containing info on row and column: position of tail = {B1, C1}, position of body = {B1, C2}, etc.
 
 Functionalities:
-move forward
+move forward (=increment position, depending on direction)
 move up
 move right
 move left
