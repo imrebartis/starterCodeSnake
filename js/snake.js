@@ -71,3 +71,7 @@ Snake.prototype.goDown = function(){
 		this.direction = 'down'
 	}
 }
+
+Snake.prototype.hasEatenFood = function(food){ //checking if the snake has eaten the food or not
+	return this.body[0].row === food.row && this.body[0].column === food.column;
+}

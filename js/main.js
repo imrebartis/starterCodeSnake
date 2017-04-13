@@ -33,10 +33,21 @@ Game.prototype.start = function () {
 }
 
 Game.prototype.update = function() {
-	this.snake.moveForward(this.rows, this.columns);
+	this.snake.moveForward(this.rows, this.columns); //this is where we set the values of the maxRows & maxColumns parameters of Snake.prototype.moveForward in snake.js
+	if(this.snake.hasEatenFood(this.food)) {
+		//this.snake.growUp()
+		this.clearFood();
+		this.generateFood();
+		this.drawFood();
+	}
 	this.clearSnake();
 	this.drawSnake()
 
+}
+
+Game.prototype.clearFood = function() {
+	$('.food').removeClass('food');
+	this.food = undefined
 }
 
 Game.prototype.assignControlsToKeys = function(){
@@ -44,19 +55,19 @@ Game.prototype.assignControlsToKeys = function(){
 	$('body').on('keydown', function(e){
 		switch (e.keyCode) {
 			case 37: //left arrow
-				console.log(this);
+				//console.log(this);
 				this.snake.goLeft();
 				break;
 			case 38: // up arrow
-				console.log(this);
+				//console.log(this);
 				this.snake.goUp();
 				break;
 			case 39: // right arrow
-				console.log(this);
+				//console.log(this);
 				this.snake.goRight();
 				break;
 			case 40: // down arrow
-				console.log(this);
+				//console.log(this);
 				this.snake.goDown();
 				break;
 		}
