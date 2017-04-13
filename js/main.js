@@ -2,6 +2,7 @@ function Game(options){
 	this.rows = options.rows;
 	this.columns = options.columns;
 	this.snake = options.snake;
+	this.food = undefined;
 
 	//creating the board:
 
@@ -38,6 +39,42 @@ Game.prototype.update = function() {
 
 }
 
+Game.prototype.assignControlsToKeys = function(){
+
+	$('body').on('keydown', function(e){
+		switch (e.keyCode) {
+			case 37: //left arrow
+				console.log(this);
+				this.snake.goLeft();
+				break;
+			case 38: // up arrow
+				console.log(this);
+				this.snake.goUp();
+				break;
+			case 39: // right arrow
+				console.log(this);
+				this.snake.goRight();
+				break;
+			case 40: // down arrow
+				console.log(this);
+				this.snake.goDown();
+				break;
+		}
+	}.bind(this))
+}
+
+Game.prototype.generateFood = function() {
+	this.food = {
+		row: Math.floor(Math.random()*this.rows),
+		column: Math.floor(Math.random()*this.columns)
+	}
+}
+
+Game.prototype.drawFood = function() {
+	var selector = '[data-row=' + this.food.row + '][data-column=' + this.food.column + ']'; // we use here attribute contains selector, see documentation: https://api.jquery.com/attribute-contains-selector/
+		$(selector).addClass('food');
+}
+
 $(document).ready(function(){
 
 	var game = new Game({
@@ -46,7 +83,10 @@ $(document).ready(function(){
 		snake: new Snake()
 	})
 
-	game.drawSnake();
+	//game.drawSnake();
+	game.assignControlsToKeys();
+	game.generateFood();
+	game.drawFood();
 	game.start();
 })
 
