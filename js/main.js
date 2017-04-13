@@ -1,6 +1,7 @@
 function Game(options){
 	this.rows = options.rows;
 	this.columns = options.columns;
+	this.snake = options.snake;
 
 	//creating the board:
 
@@ -14,6 +15,14 @@ function Game(options){
 	}
 }
 
+Game.prototype.drawSnake = function () {
+
+	this.snake.body.forEach(function(position, index){
+		var selector = '[data-row=' + position.row + '][data-column=' + position.column + ']'; // attribute contains selector, see documentation: https://api.jquery.com/attribute-contains-selector/
+		$(selector).addClass('snake');
+	})
+}
+
 $(document).ready(function(){
 
 	var game = new Game({
@@ -22,6 +31,7 @@ $(document).ready(function(){
 		snake: new Snake()
 	})
 
+	game.drawSnake();
 })
 
 /* Need to know:
