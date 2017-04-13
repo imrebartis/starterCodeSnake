@@ -45,7 +45,7 @@ Snake.prototype.moveForward = function(maxRows, maxColumns) {
 		break;
 
 	}
-	this.body.pop(); //deleting the last body cell of the snake one at a time
+	this.previousTail = this.body.pop(); //deleting the last body cell of the snake one at a time
 }
 
 Snake.prototype.goLeft = function(){
@@ -74,4 +74,17 @@ Snake.prototype.goDown = function(){
 
 Snake.prototype.hasEatenFood = function(food){ //checking if the snake has eaten the food or not
 	return this.body[0].row === food.row && this.body[0].column === food.column;
+}
+
+Snake.prototype.hasEatenItself = function() { //The some() method tests whether some element in the array passes the test implemented by the provided function.
+	return this.body.some(function(element, index, array){ //array here is the this.body
+		return (element.row === array[0].row && element.column === array[0].column && index != 0)
+	})
+}
+
+Snake.prototype.growUp = function(){
+	if(this.previousTail){
+		this.body.push(this.previousTail);
+		this.previousTail = undefined;
+	}
 }

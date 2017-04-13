@@ -29,20 +29,32 @@ Game.prototype.clearSnake = function() {
 }
 
 Game.prototype.start = function () {
-	setInterval(this.update.bind(this), 100)
+	this.intervalID = setInterval(this.update.bind(this), 100)
 }
 
 Game.prototype.update = function() {
 	this.snake.moveForward(this.rows, this.columns); //this is where we set the values of the maxRows & maxColumns parameters of Snake.prototype.moveForward in snake.js
 	if(this.snake.hasEatenFood(this.food)) {
-		//this.snake.growUp()
+		this.snake.growUp();
 		this.clearFood();
 		this.generateFood();
 		this.drawFood();
 	}
+
+	if(this.hasEatenItself){
+		this.stop();
+		alert('Game Over')
+	}
 	this.clearSnake();
 	this.drawSnake()
 
+}
+
+Game.prototype.stop = function() {
+	if(this.intervalID){
+		clearInterval(this.intervalID);
+		this.intervalID = undefined;
+	}
 }
 
 Game.prototype.clearFood = function() {
@@ -70,6 +82,12 @@ Game.prototype.assignControlsToKeys = function(){
 				//console.log(this);
 				this.snake.goDown();
 				break;
+			case 80:
+				if(this.intervalID){
+					this.stop()
+				} else {
+					this.start();
+				}
 		}
 	}.bind(this))
 }
